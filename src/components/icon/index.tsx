@@ -1,6 +1,6 @@
 import React from "react";
+import Image from "next/image"
 import { Icons } from "@/icons";
-import Image from "next/image";
 
 type IconName = keyof typeof Icons;
 
@@ -18,7 +18,7 @@ export function Icon({ name, size = 24, className }: IconProps) {
     return null;
   }
 
-  return name.includes("SVG") ? 
-    <IconName width={size} height={size} className={className} /> : 
+  return name.includes("SVG") ?
+    <IconName width={size} height={size} className={className} /> :
     <Image src={IconName} alt={name} width={size} height={size} className={className} />;
 };

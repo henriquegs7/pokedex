@@ -1,18 +1,26 @@
 import axiosInstance from "./axios";
+import { PokemonListProps, PokemonNameProps } from "@/types/pokemons";
 
-export type PokemonListProps = {
+type ResultsProps = {
   name: string
   url: string
 }
 
-export const getPokemons = async (pokemons: PokemonListProps[]): Promise<PokemonListProps[]> => {
-  const { data: { results } } = await axiosInstance.get(`pokemon?limit=${pokemons.length + 20}&offset=${pokemons.length}`); 
+type UrlProps = {
+  url: string
+}
 
+type limitInfoProps = {
+  limit: number
+  offset: number
+}
+
+const getInfoPokemons = async (results: ResultsProps[]): Promise<PokemonListProps[]> => {
   const pokemonsAllData = await Promise.all(
-    results.map(({ url }: { url: string }) => axiosInstance.get(url))
+    results.map(({ url }: UrlProps) => axiosInstance.get(url))
   );
 
-  const fetchedPokemons = results.map(({ name }: { name: string }, i: number) => ({
+  const fetchedPokemons = results.map(({ name }: PokemonNameProps, i: number) => ({
     name,
     image: pokemonsAllData[i].data.sprites.front_default,
     data: pokemonsAllData[i].data,
@@ -20,3 +28,31 @@ export const getPokemons = async (pokemons: PokemonListProps[]): Promise<Pokemon
 
   return fetchedPokemons;
 };
+
+const getPokemons = async ({ limit, offset }: limitInfoProps): Promise<PokemonListProps[]> => {
+  try {
+    const { data: { results } } = await axiosInstance.get(`pokemon?limit=${limit}&offset=${offset}`);
+
+    return await getInfoPokemons(results);
+  } catch (error) {
+    console.error("Erro ao buscar o Pokémon:", error);
+    return [];
+  }
+};
+
+const getSearchPokemons = async ({ name }: PokemonNameProps): Promise<PokemonListProps[]> => {
+  try {
+    const { data } = await axiosInstance.get(`pokemon/${name.toLowerCase()}`);
+
+    return [{
+      name: data.name,
+      image: data.sprites.front_default,
+      data: data,
+    }];
+  } catch (error) {
+    console.error("Erro ao pesquisar o Pokémon:", error);
+    return [];
+  }
+};
+
+export { getPokemons, getSearchPokemons };

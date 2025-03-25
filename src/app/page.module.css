@@ -1,19 +1,60 @@
 .page {
   font-family: var(--font-geist-sans);
   padding: 10px;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
 .header {
+  background-color: #f9fafb;
+  padding: 20px 0;
+  position: fixed;
+  width: 100%;
+  top: 0px;
+  left: 0;
+  z-index: 1;
+}
+
+.headerContent {
+  width: 100%;
+  max-width: 1100px;
+  margin: 10px auto;
+  padding: 0 10px;
+}
+
+.headerTitle {
   display: flex;
-  /* justify-content: space-between; */
   align-items: center;
   gap: 10px;
-  background-color: #f9fafb;
-  margin-bottom: 10px;
+  margin: 10px auto;
 }
 
 .header h1 {
   font-family: var(--font-geist-sans);
   font-size: 24px;
   color: #111;
+}
+
+.content {
+  margin-top: 150px;
+}
+
+.buttonTop {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  background-color: #000000;
+  border: 1px solid #e69d9d;
+  border-radius: 100%;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.buttonTop:hover {
+  background-color: #e69d9d;
+}
+
+.buttonTopIcon {
+  color: #f9fafb;
 }
