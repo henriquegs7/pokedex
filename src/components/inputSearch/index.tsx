@@ -1,19 +1,23 @@
 "use client"
-import Form from 'next/form'
-import styles from './styles.module.css'
 import { Icon } from "@/components";
+import styles from './styles.module.css'
 
 type SearchProps = {
   valueSearch: string
   onSubmit: (value: string) => void
+  setValue: (value: boolean) => void
+  value: boolean
 }
 
-export function InputSearch({valueSearch, onSubmit}: SearchProps) {
+export function InputSearch({ valueSearch, onSubmit, setValue, value }: SearchProps) {
 
   return (
-    <Form action="/search" className={styles.inputSearch}>
-      <Icon name="IconSVGSearch" size={24}/>
-      <input name="query" placeholder='Search Pokemon' value={valueSearch} onChange={(e) => onSubmit(e.target.value)}/> 
-    </Form>
+    <div className={styles.container}>
+      <div className={styles.inputSearch}>
+        <Icon name="IconSVGSearch" size={24} />
+        <input name="query" placeholder='Search Pokemon' value={valueSearch} onChange={(e) => onSubmit(e.target.value)} />
+      </div>
+      <button type="button" onClick={() => setValue(!value)} className={styles.button}>Pesquisar</button>
+    </div>
   )
 }

@@ -2,13 +2,12 @@
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
-  justify-content: space-between;
   align-items: center;
-  margin: 10px;
+  justify-content: space-around;
+  margin-top: 10px;
 }
 
 .pokemon {
-  height: 120px;
   width: 150px;
   border: 1px solid #e69d9d;
   border-radius: 10px;
@@ -22,4 +21,10 @@
 
 .pokemon:hover {
   background-color: #e69d9d;
+}
+
+.image {
+  object-fit: contain;
+  image-rendering: pixelated;
+  margin: 5px 0;
 }
