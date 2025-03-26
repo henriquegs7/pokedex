@@ -1,4 +1,5 @@
 type PokemonListProps = {
+  id: number
   name: string
   image: string
   data: {

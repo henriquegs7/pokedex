@@ -34,7 +34,8 @@
   align-items: center;
   padding: 15px 20px;
   color: white;
-  position: relative;
+  width: 100%;
+  justify-content: space-between;
 }
 
 .backButton {
@@ -44,12 +45,15 @@
   font-size: 24px;
   cursor: pointer;
   padding: 0 10px 0 0;
+  display: flex;
+  align-items: center;
 }
 
 .pokemonName {
   font-size: 24px;
   font-weight: bold;
   margin-right: auto;
+  margin-left: 10px;
 }
 
 .pokemonNumber {
@@ -72,16 +76,6 @@
 .pokemonImage {
   height: 180px;
   width: auto;
-}
-
-.nextButton {
-  position: absolute;
-  right: 10px;
-  background: none;
-  border: none;
-  color: white;
-  font-size: 30px;
-  cursor: pointer;
 }
 
 .cardContent {
