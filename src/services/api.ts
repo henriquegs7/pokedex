@@ -15,12 +15,13 @@ type limitInfoProps = {
   offset: number
 }
 
-const getInfoPokemons = async (results: ResultsProps[]): Promise<PokemonListProps[]> => {
+async function getDetailsPokemons(results: ResultsProps[]): Promise<PokemonListProps[]> {
   const pokemonsAllData = await Promise.all(
     results.map(({ url }: UrlProps) => axiosInstance.get(url))
   );
 
   const fetchedPokemons = results.map(({ name }: PokemonNameProps, i: number) => ({
+    id: pokemonsAllData[i].data.id,
     name,
     image: pokemonsAllData[i].data.sprites.front_default,
     data: pokemonsAllData[i].data,
@@ -29,22 +30,23 @@ const getInfoPokemons = async (results: ResultsProps[]): Promise<PokemonListProp
   return fetchedPokemons;
 };
 
-const getPokemons = async ({ limit, offset }: limitInfoProps): Promise<PokemonListProps[]> => {
+async function getPokemons({ limit, offset }: limitInfoProps): Promise<PokemonListProps[]> {
   try {
     const { data: { results } } = await axiosInstance.get(`pokemon?limit=${limit}&offset=${offset}`);
 
-    return await getInfoPokemons(results);
+    return await getDetailsPokemons(results);
   } catch (error) {
     console.error("Erro ao buscar o Pokémon:", error);
     return [];
   }
 };
 
-const getSearchPokemons = async ({ name }: PokemonNameProps): Promise<PokemonListProps[]> => {
+async function getSearchPokemons({ name }: PokemonNameProps): Promise<PokemonListProps[]> {
   try {
     const { data } = await axiosInstance.get(`pokemon/${name.toLowerCase()}`);
 
     return [{
+      id: data.id,
       name: data.name,
       image: data.sprites.front_default,
       data: data,

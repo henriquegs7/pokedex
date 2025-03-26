@@ -25,6 +25,12 @@
   font-family: var(--font-geist-sans);
 }
 
+.buttonClose {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
 .button {
   height: 48px;
   width: 100px;

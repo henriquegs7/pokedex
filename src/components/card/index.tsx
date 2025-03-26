@@ -1,17 +1,19 @@
 import Image from 'next/image'
+import { png } from '@/assests'
 import { PokemonListProps } from '@/types/pokemons'
 import { FormatName } from '@/utils/FormatName'
+import { Icon } from '../icon'
 import styles from './styles.module.css'
 
-type ModalProps = {
+type CardProps = {
   selectedPokemon: PokemonListProps
   onClose: () => void
 }
 
-export function Modal({ selectedPokemon, onClose }: ModalProps) {
-  const { name, image, data } = selectedPokemon
+export function Card({ selectedPokemon, onClose }: CardProps) {
+  const { id, name, image, data } = selectedPokemon
 
-  const abbreviationName = (name: string) => {
+  function abbreviationName(name: string) {
     const names = {
       hp: 'HP',
       attack: 'ATK',
@@ -22,24 +24,34 @@ export function Modal({ selectedPokemon, onClose }: ModalProps) {
     }
     return names[name as keyof typeof names] || name
   }
-  
+
   return (
-    <div className={styles.container}>
+    <div key={id} className={styles.container}>
       <div className={styles.modal}>
         <div className={styles.pokemonCard}>
           <div className={styles.cardHeader}>
-            <button className={styles.backButton} onClick={onClose}>←</button>
-            <h1 className={styles.pokemonName}>{FormatName(name)}</h1>
+            <button className={styles.backButton} onClick={onClose}>
+              <Icon name="IconSVGArrowBack" size={24} />
+              <h1 className={styles.pokemonName}>{FormatName(name)}</h1>
+            </button>
             <span className={styles.pokemonNumber}>#{data.id}</span>
           </div>
 
           <div className={styles.pokemonImageContainer}>
-            <Image src={image} alt={name} height={100} width={100} className={styles.pokemonImage} />
+            <Image
+              src={image}
+              alt={name || "Imagem do Pokemon"}
+              width={60}
+              height={60}
+              className={styles.pokemonImage}
+              loading="lazy"
+              overrideSrc={png["IconPNGShadowPokemon"].src}
+            />
           </div>
 
           <div className={styles.cardContent}>
             <div className={styles.typeBadges}>
-              {data?.types?.map(({ type }) => <p key={type.name}>{FormatName(type.name)}</p>)}
+              {data?.types?.map(({ type }, i) => <p key={i}>{FormatName(type.name)}</p>)}
             </div>
 
             <h2 className={styles.sectionTitle}>About</h2>
@@ -57,7 +69,7 @@ export function Modal({ selectedPokemon, onClose }: ModalProps) {
               <div className={styles.statDivider} />
               <div className={styles.statItem}>
                 <div className={styles.statValue}>
-                  {data?.abilities?.map(({ ability }) => <p key={ability.name}>{FormatName(ability.name)}</p>)}
+                  {data?.abilities?.map(({ ability }, i) => <p key={i}>{FormatName(ability.name)}</p>)}
                 </div>
                 <div className={styles.statLabel}>Moves</div>
               </div>
@@ -66,8 +78,8 @@ export function Modal({ selectedPokemon, onClose }: ModalProps) {
             <h2 className={styles.sectionTitle}>Base Stats</h2>
 
             <div className={styles.baseStats}>
-              {data?.stats?.map((stat) => (
-                <div className={styles.statRow} key={stat.stat.name}>
+              {data?.stats?.map((stat, i) => (
+                <div className={styles.statRow} key={i}>
                   <div className={styles.statName}>{abbreviationName(stat.stat.name)}</div>
                   <div className={styles.statNumber}>{stat.base_stat}</div>
                   <div className={styles.statBar}>

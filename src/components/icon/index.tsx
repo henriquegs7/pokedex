@@ -1,8 +1,7 @@
 import React from "react";
-import Image from "next/image"
-import { Icons } from "@/icons";
+import { svg } from "@/assests";
 
-type IconName = keyof typeof Icons;
+type IconName = keyof typeof svg;
 
 type IconProps = {
   name: IconName;
@@ -11,14 +10,12 @@ type IconProps = {
 }
 
 export function Icon({ name, size = 24, className }: IconProps) {
-  const IconName = Icons[name];
+  const IconName = svg[name];
 
   if (!IconName) {
     console.error(`Ícone "${name}" não encontrado.`);
     return null;
   }
 
-  return name.includes("SVG") ?
-    <IconName width={size} height={size} className={className} /> :
-    <Image src={IconName} alt={name} width={size} height={size} className={className} />;
+  return <IconName size={size} className={className} />;
 };
