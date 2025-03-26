@@ -15,7 +15,7 @@ export function InputSearch({ valueSearch, onSubmit, setValue, value }: SearchPr
     <div className={styles.container}>
       <div className={styles.inputSearch}>
         <Icon name="IconSVGSearch" size={24} />
-        <input name="query" placeholder='Search Pokemon' value={valueSearch} onChange={(e) => onSubmit(e.target.value)} />
+        <input name="query" placeholder='Procure seu Pokemon' value={valueSearch} onChange={(e) => onSubmit(e.target.value)} />
       </div>
       <button type="button" onClick={() => setValue(!value)} className={styles.button}>Pesquisar</button>
     </div>

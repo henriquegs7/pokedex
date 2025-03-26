@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Pokedex",
-  description: "your the best Pokedex",
+  title: "Pokédex",
+  description: "your the best Pokédex",
 };
 
 export default function RootLayout({
