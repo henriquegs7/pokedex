@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useRef, useState } from "react";
-import { Icon, InputSearch, Loading, PokemonList } from "@/components";
+import { Icon, InputSearch, Loading, Modal, PokemonList } from "@/components";
 import { getPokemons, getSearchPokemons } from "@/services/api";
 import { PokemonListProps, PokemonNameProps } from "@/types/pokemons";
 import styles from "./page.module.css";
@@ -10,6 +10,9 @@ export default function Home() {
   const [showSearch, setShowSearch] = useState(false);
   const [pokemons, setPokemons] = useState<PokemonListProps[]>([]);
   const [filteredPokemons, setFilteredPokemons] = useState<PokemonListProps[]>([]);
+
+  const [seletedPokemon, setSelectedPokemon] = useState<PokemonListProps>({} as PokemonListProps);
+  const [showModal, setShowModal] = useState(false);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -95,16 +98,16 @@ export default function Home() {
         <div className={styles.headerContent}>
           <div className={styles.headerTitle}>
             <Icon name="IconPNGPokeball" size={24} />
-            <h1>Pokedex</h1>
+            <h1>Pokédex</h1>
           </div>
           <InputSearch valueSearch={searchPokemon} onSubmit={(value) => { setSearchPokemon(value) }} setValue={setShowSearch} value={showSearch} />
         </div>
       </div>
 
       <div className={styles.content}>
-        {loading ? <Loading /> : <PokemonList pokemons={filteredPokemons} />}
-        {filteredPokemons.length === 0 && <p>Nenhum Pokemon encontrado</p>}
-        <div ref={loadMoreRef} style={{ height: "20px", background: "transparent" }} />
+        {loading ? <Loading /> : <PokemonList pokemons={filteredPokemons} onOpenModal={() => setShowModal(!showModal)} setSelectedPokemon={setSelectedPokemon} />}
+        {filteredPokemons.length === 0 && <p className={styles.noPokemon}>Nenhum Pokemon encontrado</p>}
+        <div ref={loadMoreRef} style={{ height: "20px", background: "white" }} />
       </div>
 
       {error && <p>{error}</p>}
@@ -112,6 +115,8 @@ export default function Home() {
       <button onClick={scrollToTop} className={styles.buttonTop}>
         <Icon name="IconSVGArrowUp" size={24} className={styles.buttonTopIcon} />
       </button>
+      
+      {showModal && <Modal selectedPokemon={seletedPokemon} onClose={() => setShowModal(!showModal)} />}
     </div>
   );
 }
