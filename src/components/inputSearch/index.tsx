@@ -1,23 +1,35 @@
 import { Icon } from "@/components";
+import { useSearchPokemonName } from "@/context/PokemonContext";
+import { usePokemonData } from "@/hooks";
 import styles from './styles.module.css'
 
-type SearchProps = {
-  valueSearch: string
-  onSubmit: (value: string) => void
-  setValue: (value: boolean) => void
-  value: boolean
-}
+export function InputSearch() {
+  const { SearchByPokemonAPI } = usePokemonData();
+  const { searchPokemonName, setSearchPokemonName } = useSearchPokemonName();
 
-export function InputSearch({ valueSearch, onSubmit, setValue, value }: SearchProps) {
+  async function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
+    if (event.key === "Enter") {
+      await SearchByPokemonAPI();
+    }
+  }
+
   return (
     <div className={styles.inputSearch}>
       <Icon name="IconSVGSearch" size={24} />
-      <input name="query" placeholder='Procure seu Pokemon' value={valueSearch} onChange={(e) => onSubmit(e.target.value)} />
+      <input
+        type="text"
+        name="searchPokemonByName"
+        placeholder='Procure seu Pokemon'
+        value={searchPokemonName}
+        onChange={(e) => setSearchPokemonName(e.target.value)}
+        onKeyDown={handleKeyDown}
+      />
 
-      <button onClick={() => onSubmit('')} type="button" className={styles.buttonClose}>
-        <Icon name="IconSVGClose" size={24} />
-      </button>
-      <button type="button" onClick={() => setValue(!value)} className={styles.button}>Buscar</button>
+      {searchPokemonName && (
+        <button onClick={() => setSearchPokemonName('')} type="button" className={styles.buttonClose}>
+          <Icon name="IconSVGClose" size={24} />
+        </button>
+      )}
     </div>
   )
 }

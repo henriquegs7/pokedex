@@ -4,27 +4,25 @@ import { PokemonListProps } from "@/types/pokemons";
 import { FormatName } from "@/utils/FormatName";
 import styles from './styles.module.css'
 import { Icon } from "../icon";
+import { useFavorites } from "@/hooks/useFavorites";
 
 type ListProps = {
-  pokemons: PokemonListProps[]
+  pokemonsList: PokemonListProps[]
   onOpenModal: (value: boolean) => void
   setSelectedPokemon: (value: PokemonListProps) => void
 }
 
-export function List({ pokemons, onOpenModal, setSelectedPokemon }: ListProps) {
-  function handleOpenModal({ name, image, data, id, isFavorite }: PokemonListProps) {
-    onOpenModal(true);
-    setSelectedPokemon({ name, image, data, id, isFavorite });
-  };
+export function List({ pokemonsList, onOpenModal, setSelectedPokemon }: ListProps) {
+  const toggleFavorite = useFavorites();
 
-  function handleSelectFavourite(pokemon: PokemonListProps) {
-    pokemon.isFavorite = !pokemon.isFavorite;
+  function handleOpenModal(pokemon: PokemonListProps) {
+    onOpenModal(true);
     setSelectedPokemon(pokemon);
   };
 
   return (
     <div className={styles.content}>
-      {pokemons?.map((pokemon: PokemonListProps) => {
+      {pokemonsList?.map((pokemon: PokemonListProps) => {
         const { id, name, image, isFavorite } = pokemon;
         const nameIcon = isFavorite ? "IconSVGHeartSolid" : "IconSVGHeartRegular"
         const starClass = isFavorite ? styles.iconStarFavouriteActive : styles.iconStarFavourite;
@@ -32,7 +30,7 @@ export function List({ pokemons, onOpenModal, setSelectedPokemon }: ListProps) {
         return(
         <div key={id} className={styles.pokemon}>
           <div className={styles.idContainer}>
-            <button type="button" onClick={() => handleSelectFavourite(pokemon)} className={styles.buttonTopIcon}>
+            <button type="button" onClick={() => toggleFavorite(pokemon)} className={styles.buttonTopIcon}>
               <Icon name={nameIcon} size={16} className={starClass} />
             </button>
             <p className={styles.id}>#{id}</p>
