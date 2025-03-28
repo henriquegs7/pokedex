@@ -2,6 +2,7 @@ type PokemonListProps = {
   id: number
   name: string
   image: string
+  isFavorite: boolean
   data: {
     id: number
     height: number

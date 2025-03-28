@@ -1,11 +1,9 @@
 "use client"
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
-import { png } from "@/assests";
 import { Icon, InputSearch, Loading, Card, List } from "@/components";
 import { getPokemons, getSearchPokemons } from "@/services/api";
 import { PokemonListProps, PokemonNameProps } from "@/types/pokemons";
-import { getPokemonsFromDB, savePokemonToDB } from "@/services/db";
+import { getPokemonsFromDB, resetAndSavePokemonsToDB, savePokemonToDB } from "@/services/db";
 import styles from "./page.module.css";
 
 export default function Home() {
@@ -52,8 +50,8 @@ export default function Home() {
 
       const response: PokemonListProps[] = await getPokemons({ limit, offset });
 
-      SetDataPokenons([...response]);
-      await savePokemonToDB([...response]);
+      SetDataPokenons([...pokemons, ...response]);
+      await savePokemonToDB([...pokemons, ...response]);
 
       setError("")
     } catch (err) {
@@ -100,24 +98,44 @@ export default function Home() {
   }, [searchPokemon, showSearch]);
 
   useEffect(() => {
-    function AutoLoading() {
-      if (!loadMoreRef.current) return;
-      if (searchPokemon.length > 0) return
-      if (pokemons.length === 1302) return
+    if (!loadMoreRef.current) return;
+    if (searchPokemon.length > 0) return
+    if (pokemons.length === 1302) return
 
-      observerRef.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting) {
-          LoadingPokemon();
-        }
-      });
+    observerRef.current = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        LoadingPokemon();
+      }
+    });
 
-      observerRef.current.observe(loadMoreRef.current);
+    observerRef.current.observe(loadMoreRef.current);
 
-      return () => observerRef.current?.disconnect();
-    }
+    return () => observerRef.current?.disconnect();
 
-    AutoLoading();
   }, [pokemons.length, searchPokemon.length]);
+
+  useEffect(() => {
+    const updateFavorites = async () => {
+      const newPokemons = filteredPokemons.filter(pokemon => pokemon.id !== seletedPokemon.id);
+
+      let updatedList;
+
+      if (seletedPokemon.isFavorite) {
+        updatedList = [seletedPokemon, ...newPokemons];
+      } else {
+        let smallerIndex = newPokemons.findLastIndex(pokemon => pokemon.id < seletedPokemon.id);
+        let greaterIndex = newPokemons.findIndex(pokemon => pokemon.id > seletedPokemon.id);
+
+        let insertIndex = smallerIndex !== -1 ? smallerIndex + 1 : greaterIndex !== -1 ? greaterIndex : newPokemons.length;
+        updatedList = [...newPokemons.slice(0, insertIndex), seletedPokemon, ...newPokemons.slice(insertIndex)];
+      }
+
+      setFilteredPokemons(updatedList);
+      await resetAndSavePokemonsToDB(updatedList);
+    };
+
+    updateFavorites();
+  }, [seletedPokemon]);
 
   return (
     <div className={styles.page}>
@@ -125,7 +143,7 @@ export default function Home() {
         <div className={styles.headerContent}>
 
           <div className={styles.headerTitle}>
-            <Image src={png["IconPNGPokeball"].src} alt="Pokeball" width={24} height={24} className={styles.image} />
+            <Icon name="IconSVGPokeball" size={24} className={styles.image} />
             <h1>Pokédex</h1>
           </div>
 
@@ -134,8 +152,8 @@ export default function Home() {
       </div>
 
       <div className={styles.content}>
-        {error && <p>{error}</p>}
         {loading ? <Loading /> : <List pokemons={filteredPokemons} onOpenModal={() => setShowCard(!showCard)} setSelectedPokemon={setSelectedPokemon} />}
+
         {filteredPokemons.length === 0 && <p className={styles.noPokemon}>Nenhum Pokemon encontrado</p>}
         <div ref={loadMoreRef} style={{ height: "20px", background: "white" }} />
       </div>

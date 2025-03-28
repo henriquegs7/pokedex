@@ -37,6 +37,25 @@ async function savePokemonToDB(pokemons: PokemonListProps[]) {
   }
 };
 
+async function resetAndSavePokemonsToDB(pokemons: PokemonListProps[]) {
+  const db = await openDB(DB_NAME, DB_VERSION_POKEMON, STORE_NAME_POKEMON);
+  const transaction = (db as IDBDatabase).transaction(STORE_NAME_POKEMON, "readwrite");
+  const store = transaction.objectStore(STORE_NAME_POKEMON);
+
+  const clearRequest = store.clear();
+
+  clearRequest.onsuccess = () => {
+    for (const pokemon of pokemons) {
+      store.put(pokemon);
+    }
+  };
+
+  clearRequest.onerror = () => {
+    console.error("Erro ao limpar dados anteriores.");
+  };
+}
+
+
 async function getPokemonsFromDB(): Promise<PokemonListProps[]> {
   const db = await openDB(DB_NAME, DB_VERSION_POKEMON, STORE_NAME_POKEMON);
 
@@ -45,9 +64,17 @@ async function getPokemonsFromDB(): Promise<PokemonListProps[]> {
     const store = transaction.objectStore(STORE_NAME_POKEMON);
     const request = store.getAll();
 
-    request.onsuccess = () => resolve(request.result);
+    request.onsuccess = () => {
+      const result = request.result;
+
+      resolve(result.sort((a, b) => {
+        if (a.isFavorite && !b.isFavorite) return -1;
+        if (!a.isFavorite && b.isFavorite) return 1;
+        return a.id - b.id;
+      }));
+    };
     request.onerror = () => reject("Erro ao buscar Pokémons do IndexedDB");
   });
 };
 
-export { savePokemonToDB, getPokemonsFromDB };
+export { savePokemonToDB, resetAndSavePokemonsToDB, getPokemonsFromDB };
