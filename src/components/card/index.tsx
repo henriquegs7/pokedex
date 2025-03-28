@@ -11,7 +11,7 @@ type CardProps = {
 }
 
 export function Card({ selectedPokemon, onClose }: CardProps) {
-  const { id, name, image, data } = selectedPokemon
+  const { id, name, image, data, isFavorite } = selectedPokemon
 
   function abbreviationName(name: string) {
     const names = {
@@ -34,6 +34,8 @@ export function Card({ selectedPokemon, onClose }: CardProps) {
               <Icon name="IconSVGArrowBack" size={24} />
               <h1 className={styles.pokemonName}>{FormatName(name)}</h1>
             </button>
+            {isFavorite && <Icon name={isFavorite ? "IconSVGHeartSolid" : "IconSVGHeartRegular"} size={16} />}
+
             <span className={styles.pokemonNumber}>#{data.id}</span>
           </div>
 
