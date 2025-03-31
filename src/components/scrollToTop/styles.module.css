@@ -1,0 +1,18 @@
+.buttonTop {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  background-color: #000000;
+  border: 1px solid #e69d9d;
+  border-radius: 100%;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.buttonTop:hover {
+  background-color: #e69d9d;
+}
+
+.buttonTopIcon {
+  color: #f9fafb;
+}

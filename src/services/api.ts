@@ -24,6 +24,7 @@ async function getDetailsPokemons(results: ResultsProps[]): Promise<PokemonListP
     id: pokemonsAllData[i].data.id,
     name,
     image: pokemonsAllData[i].data.sprites.front_default,
+    isFavorite: false,
     data: pokemonsAllData[i].data,
   }));
 
@@ -49,6 +50,7 @@ async function getSearchPokemons({ name }: PokemonNameProps): Promise<PokemonLis
       id: data.id,
       name: data.name,
       image: data.sprites.front_default,
+      isFavorite: false,
       data: data,
     }];
   } catch (error) {

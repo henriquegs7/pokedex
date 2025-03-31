@@ -25,6 +25,18 @@
   padding: 0 10px;
 }
 
+.headerSearch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.image {
+  width: 24px;
+  height: 24px;
+  color: #f9fafb;
+}
+
 .headerTitle {
   display: flex;
   align-items: center;
@@ -47,6 +59,8 @@
   left: 10px;
   right: 10px;
   border-radius: 16px;
+  max-width: 1080px;
+  margin: 0 auto;
 }
 
 .noPokemon {
@@ -54,23 +68,4 @@
   color: #333;
   font-size: 16px;
   margin-left: 20px;
-}
-
-.buttonTop {
-  position: fixed;
-  bottom: 40px;
-  right: 40px;
-  background-color: #000000;
-  border: 1px solid #e69d9d;
-  border-radius: 100%;
-  padding: 10px;
-  cursor: pointer;
-}
-
-.buttonTop:hover {
-  background-color: #e69d9d;
-}
-
-.buttonTopIcon {
-  color: #f9fafb;
 }
