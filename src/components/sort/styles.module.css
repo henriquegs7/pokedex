@@ -1,0 +1,118 @@
+.sortContainer {
+  position: relative;
+}
+
+.buttonSort {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: white;
+  border: 1px solid #e5e5e5;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  color: #6b7280;
+  font-size: 18px;
+}
+
+.sortCard {
+  position: absolute;
+  top: 40px;
+  right: 1px;
+  z-index: 100;
+  width: 200px;
+  border-radius: 16px;
+  background-color: #e31837;
+  border-color: #6b7280;
+  border-width: 1px;
+  color: white;
+  box-shadow: -6px 6px 3px 3px #0000001a;
+}
+
+.sortCardHeader {
+  padding: 12px;
+  padding-bottom: 8px;
+  font-weight: 500;
+}
+
+.sortCardContent {
+  background-color: white;
+  border-radius: 8px;
+  margin: 0 12px 12px 12px;
+  padding: 12px;
+}
+
+.radioGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.radioOption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.radioInput {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.radio {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.radioCustom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1px solid #e31837;
+  background-color: white;
+  cursor: pointer;
+}
+
+.radioInput:checked + .radioCustom::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #e31837;
+}
+
+.radioLabel {
+  color: black;
+  font-size: 14px;
+}
+
+.hidden {
+  display: none;
+}
+
+.buttonSort {
+  border: none;
+  cursor: pointer;
+  color: #6b7280;
+  font-size: 18px;
+  cursor: pointer;
+} 
+
+.iconArrowUp {
+  color: #e31837;
+  transform: rotate(180deg);
+}
+
+.iconArrowDown {
+  color: #e31837;
+  transform: rotate(0deg);
+}

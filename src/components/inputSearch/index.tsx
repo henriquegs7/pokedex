@@ -7,29 +7,31 @@ export function InputSearch() {
   const { SearchByPokemonAPI } = usePokemonData();
   const { searchPokemonName, setSearchPokemonName } = useSearchPokemonName();
 
-  async function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
+  function handleKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === "Enter") {
-      await SearchByPokemonAPI();
+      SearchByPokemonAPI(searchPokemonName.trim()); // Envia o nome completo ao pressionar Enter
     }
-  }
+  };
 
   return (
     <div className={styles.inputSearch}>
       <Icon name="IconSVGSearch" size={24} />
       <input
-        type="text"
-        name="searchPokemonByName"
-        placeholder='Procure seu Pokemon'
+        name="query"
+        placeholder="Procure seu Pokémon"
         value={searchPokemonName}
         onChange={(e) => setSearchPokemonName(e.target.value)}
-        onKeyDown={handleKeyDown}
+        onKeyDown={handleKeyPress}
       />
-
-      {searchPokemonName && (
-        <button onClick={() => setSearchPokemonName('')} type="button" className={styles.buttonClose}>
+      {searchPokemonName &&
+        <button
+          onClick={() => setSearchPokemonName("")}
+          type="button"
+          className={styles.buttonClose}
+        >
           <Icon name="IconSVGClose" size={24} />
         </button>
-      )}
+      }
     </div>
   )
 }

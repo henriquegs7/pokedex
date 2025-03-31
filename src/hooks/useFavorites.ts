@@ -1,6 +1,6 @@
 import { usePokemon } from "@/context/PokemonContext";
 import { PokemonListProps } from "@/types/pokemons";
-import { resetAndSavePokemonsToDB } from "@/services/db";
+import { resetAndSavePokemonsToDB } from "@/services/db"; // Alterado para atualizar apenas um item
 
 export function useFavorites() {
   const { pokemons, setPokemons } = usePokemon();
@@ -9,25 +9,19 @@ export function useFavorites() {
     const isFavoriting = !selected.isFavorite;
     const updatedPokemon = { ...selected, isFavorite: isFavoriting };
 
-    // Remove o Pokémon da lista atual
-    const newPokemons = pokemons.filter((p) => p.id !== selected.id);
+    const index = pokemons.findIndex((p) => p.id === selected.id);
+    if (index === -1) return;
 
-    let updatedList;
+    const updatedList = [...pokemons];
+    updatedList[index] = updatedPokemon;
+
     if (isFavoriting) {
-      // Coloca no topo se for favorito
-      updatedList = [updatedPokemon, ...newPokemons];
-    } else {
-      // Volta para a posição original
-      const smallerIndex = newPokemons.findLastIndex((p) => p.id < selected.id);
-      const higherIndex = newPokemons.findIndex((p) => p.id > selected.id);
+      updatedList.splice(index, 1); 
+      updatedList.unshift(updatedPokemon);
+    }
 
-      const insertIndex = smallerIndex !== -1 ? smallerIndex + 1 : higherIndex !== -1 ? higherIndex : newPokemons.length;
-
-      updatedList = [...newPokemons.slice(0, insertIndex), updatedPokemon, ...newPokemons.slice(insertIndex)];
-    }    
-
-    setPokemons(updatedList);
     await resetAndSavePokemonsToDB(updatedList);
+    setPokemons(updatedList);
   }
 
   return toggleFavorite;

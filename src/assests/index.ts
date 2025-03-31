@@ -6,6 +6,7 @@ import IconSVGArrowBack from "./icons/ArrowBack.svg"
 import IconSVGHeartRegular from "./icons/HeartRegular.svg"
 import IconSVGHeartSolid from "./icons/HeartSolid.svg"
 import IconSVGPokeball from "./icons/Pokeball.svg"
+import IconSVGArrowSort from "./icons/ArrowSort.svg"
 
 import IconPNGShadowPokemon from "./images/ShadowPokemon.png"
 
@@ -17,7 +18,8 @@ export const svg = {
   IconSVGClose,
   IconSVGHeartRegular,
   IconSVGHeartSolid,
-  IconSVGPokeball
+  IconSVGPokeball,
+  IconSVGArrowSort,
 } as const;
 
 export const png = {

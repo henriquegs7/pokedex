@@ -1,10 +1,10 @@
 import Image from "next/image";
 import { png } from "@/assests";
+import { useFavorites } from "@/hooks/useFavorites";
 import { PokemonListProps } from "@/types/pokemons";
 import { FormatName } from "@/utils/FormatName";
-import styles from './styles.module.css'
 import { Icon } from "../icon";
-import { useFavorites } from "@/hooks/useFavorites";
+import styles from './styles.module.css'
 
 type ListProps = {
   pokemonsList: PokemonListProps[]
@@ -30,12 +30,19 @@ export function List({ pokemonsList, onOpenModal, setSelectedPokemon }: ListProp
         return(
         <div key={id} className={styles.pokemon}>
           <div className={styles.idContainer}>
-            <button type="button" onClick={() => toggleFavorite(pokemon)} className={styles.buttonTopIcon}>
+            <button 
+              type="button" 
+              onClick={() => toggleFavorite(pokemon)} 
+              className={styles.buttonTopIcon}>
               <Icon name={nameIcon} size={16} className={starClass} />
             </button>
             <p className={styles.id}>#{id}</p>
           </div>
-          <button type="button" key={id} className={styles.buttonDetails} onClick={() => handleOpenModal(pokemon)}>
+          <button 
+            type="button" 
+            key={id} 
+            className={styles.buttonDetails} 
+            onClick={() => handleOpenModal(pokemon)}>
             <Image
               src={image}
               alt={name || "Imagem do Pokemon"}

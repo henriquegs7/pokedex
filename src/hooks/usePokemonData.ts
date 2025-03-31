@@ -8,25 +8,26 @@ export function usePokemonData() {
   const { pokemons, setPokemons } = usePokemon();
   const { searchPokemonName } = useSearchPokemonName();
   const [filteredPokemons, setFilteredPokemons] = useState<PokemonListProps[]>(pokemons);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(false);
 
   async function FetchPokemons() {
+    setLoading(true);
+
     try {
-      setLoading(true);
-
       const pokemonsDB: PokemonListProps[] = await getPokemonsFromDB();
-      // const isSalvedPokemon = pokemonsDB.length === pokemons.length
 
-      // if (!isSalvedPokemon || !navigator.onLine) {
-      //    setPokemons(pokemonsDB);
-      //   console.log("Exibindo Pokémons salvos offline.");
-      //   return;
-      // }
+      if (pokemonsDB.length > 0 && filteredPokemons.length < 2 && searchPokemonName === "") {
+        setPokemons(pokemonsDB);
+        return;
+      }
 
-      const response: PokemonListProps[] = await getPokemons({ limit: pokemonsDB.length + 20, offset: pokemons.length });
-      setPokemons([...pokemons, ...response]);
-      await savePokemonToDB([...pokemons, ...response]);
+      if (navigator.onLine) {
+        const newPokemons = await getPokemons({ limit: 20, offset: pokemonsDB.length });
 
+        setPokemons([...pokemons, ...newPokemons]);
+        await savePokemonToDB([...pokemonsDB, ...newPokemons]);
+        return;
+      }
     } catch (err) {
       console.error("Erro ao carregar Pokémons.", err);
     } finally {
@@ -34,12 +35,13 @@ export function usePokemonData() {
     }
   }
 
-  async function SearchByPokemonAPI() {
+  async function SearchByPokemonAPI(name: string) {
+    setLoading(true);
     try {
-      setLoading(true);
-      const response: PokemonListProps[] = await getSearchPokemons({ name: searchPokemonName });
-      
-      setFilteredPokemons(response);
+      const response: PokemonListProps[] = await getSearchPokemons({ name });
+      setPokemons(response);
+
+      return
     } catch (err) {
       console.error("Erro ao carregar a pesquisa do Pokemon.", err);
     } finally {
@@ -47,25 +49,21 @@ export function usePokemonData() {
     }
   };
 
-  async function FilterPokemonExistingDB() {
+  function FilterPokemonExistingDB() {
     const filtered = pokemons.filter((pokemon) =>
       pokemon.name.toLowerCase().includes(searchPokemonName.toLowerCase())
     );
-    
+
     setFilteredPokemons(filtered);
   }
 
   useEffect(() => {
-    setFilteredPokemons(pokemons);
-  }, [pokemons]);
-
-  useEffect(() => {
-    FetchPokemons();
-  }, []);
-
-  useEffect(() => {
     FilterPokemonExistingDB();
   }, [searchPokemonName]);
+
+  useEffect(() => {
+    setFilteredPokemons(pokemons);
+  }, [pokemons]);
 
   return {
     filteredPokemons,

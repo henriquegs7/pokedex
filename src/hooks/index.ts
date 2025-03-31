@@ -1,2 +1,3 @@
 export * from "./usePokemonData"
-export { useInfiniteScroll } from "./useInfiniteScroll"
+export { useSortPokemons } from "./useSort";
+export { useFavorites } from "./useFavorites";

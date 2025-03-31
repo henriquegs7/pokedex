@@ -1,8 +1,7 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState } from "react";
 import { PokemonListProps } from "@/types/pokemons";
-import { getPokemonsFromDB } from "@/services/db";
 
 type PokemonContextType = {
   pokemons: PokemonListProps[];
@@ -20,15 +19,6 @@ const SearchPokemonNameContext = createContext<SearchPokemonNameContextType | un
 export function PokemonProvider({ children }: { children: React.ReactNode }) {
   const [pokemons, setPokemons] = useState<PokemonListProps[]>([]);
   const [searchPokemonName, setSearchPokemonName] = useState<string>('');
-
-  useEffect(() => {
-    async function fetchPokemons() {
-      const pokemonsDB = await getPokemonsFromDB();
-      setPokemons(pokemonsDB);
-    }
-    
-    fetchPokemons();
-  }, []);
 
   return (
     <PokemonContext.Provider value={{ pokemons, setPokemons }}>
