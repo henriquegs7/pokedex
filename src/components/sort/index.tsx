@@ -6,7 +6,6 @@ import styles from "./styles.module.css";
 
 export function Sort() {
   const { pokemons, setPokemons } = usePokemon();
-
   const [showSortCard, setShowSortCard] = useState(false);
   const [sortBy, setSortBy] = useState<string>("favorites");
   const [sortDirections, setSortDirections] = useState<{ [key: string]: boolean }>({
@@ -17,23 +16,32 @@ export function Sort() {
 
   const optionsSort = ["name", "number", "favorites"];
 
-  const handleSortChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  function handleSortChange(event: React.ChangeEvent<HTMLInputElement>) {
     setSortBy(event.target.value)
   }
 
-  const toggleSortDirection = (option: string) => {
+  function toggleSortDirection(option: string) {
     setSortDirections((prev) => ({ ...prev, [option]: !prev[option] }));
   };
 
   useEffect(() => {
-    const sortedPokemons = useSortPokemons(pokemons, sortBy as "name" | "number" | "favorites", sortDirections[sortBy]);
-    setPokemons(sortedPokemons);
+    function SortPokemons() {
+      const sortedPokemons = useSortPokemons(pokemons, sortBy as "name" | "number" | "favorites", sortDirections[sortBy]);
+
+      setPokemons(sortedPokemons);
+    }
+
+    SortPokemons()
   }, [sortBy, sortDirections]);
 
   return (
     <div className={styles.sortContainer}>
-      <button type="button" onClick={() => setShowSortCard(!showSortCard)} className={styles.buttonSort}>#</button>
-
+      <button
+        type="button"
+        onClick={() => setShowSortCard(!showSortCard)}
+        className={styles.buttonSort}>
+        #
+      </button>
       <div className={styles.sortCard}>
         <div className={`${styles.sortCard} ${!showSortCard ? styles.hidden : ""}`}>
           <div className={styles.sortCardHeader}>Sort by:</div>

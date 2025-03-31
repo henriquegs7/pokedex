@@ -16,7 +16,7 @@ export function useFavorites() {
     updatedList[index] = updatedPokemon;
 
     if (isFavoriting) {
-      updatedList.splice(index, 1); 
+      updatedList.splice(index, 1);
       updatedList.unshift(updatedPokemon);
     }
 

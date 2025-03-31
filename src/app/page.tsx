@@ -52,7 +52,10 @@ export default function Home() {
         </div>
       </div>
       <div className={styles.content}>
-        <List pokemonsList={filteredPokemons} onOpenModal={() => setShowCard(!showCard)} setSelectedPokemon={setSelectedPokemon} />
+        <List 
+          pokemonsList={filteredPokemons} 
+          onOpenModal={() => setShowCard(!showCard)} 
+          setSelectedPokemon={setSelectedPokemon} />
         {filteredPokemons.length === 0 && <p className={styles.noPokemon}>Nenhum Pokemon encontrado</p>}
         <div ref={loadMoreRef} style={{ height: "20px", background: "white" }} />
       </div>

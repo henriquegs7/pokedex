@@ -5,7 +5,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Pokédex",
-  description: "your the best Pokédex",
+  description: "Melhor escolha do deu dia!",
 };
 
 export default function RootLayout({
