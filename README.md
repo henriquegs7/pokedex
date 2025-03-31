@@ -4,8 +4,8 @@
 Este é um projeto de Pokédex desenvolvido com **Next.js 15**. Ele permite visualizar uma lista de Pokémons, buscar por nomes específicos, ordenar por diferentes critérios e salvar os dados offline usando **IndexedDB**.
 
 ## 🔗 Links úteis  
-- 🔥 **Live Demo**: [https://seu-dominio.com](https://seu-dominio.com)  
-- 📂 **Repositório**: [GitHub](https://github.com/seu-repositorio)  
+- 🔥 **Live Demo**: [https://seu-dominio.com](https://pokedex-hs.vercel.app/)
+- 📂 **Repositório**: [GitHub](https://github.com/henriquegs7/pokedex)  
 
 ## Funcionalidades
 - 🔍 **Busca por nome** de Pokémons
@@ -35,6 +35,6 @@ yarn install
 yarn dev
 
 # Abra o link
-`http://localhost:3000`
+http://localhost:3000  
 
 ```
