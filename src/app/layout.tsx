@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { PokemonProvider } from "@/context/PokemonContext";
 
 import "./globals.css";
 
@@ -16,9 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <PokemonProvider>
-          {children}
-        </PokemonProvider>
+        {children}
       </body>
     </html>
   );

@@ -4,7 +4,6 @@ type PokemonListProps = {
   image: string
   isFavorite: boolean
   data: {
-    id: number
     height: number
     weight: number
     types: { type: { name: string } }[]

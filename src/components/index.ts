@@ -1,7 +1,0 @@
-export { InputSearch } from "./inputSearch"
-export { Loading } from "./loading"
-export { Icon } from "./icon"
-export { List } from "./list"
-export { Card } from "./card"
-export { ScrollToTop } from "./scrollToTop"
-export { Sort } from "./sort"

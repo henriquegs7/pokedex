@@ -4,6 +4,7 @@ import { useFavorites } from "@/hooks/useFavorites";
 import { PokemonListProps } from "@/types/pokemons";
 import { FormatName } from "@/utils/FormatName";
 import { Icon } from "../icon";
+
 import styles from './styles.module.css'
 
 type ListProps = {

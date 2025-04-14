@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { usePokemon } from "@/context/PokemonContext";
-import { useSortPokemons } from "@/hooks";
+import { usePokemonStore } from "@/global/pokemons";
+import { useSortPokemons } from "@/hooks/useSort";
 import { Icon } from "../icon";
+
 import styles from "./styles.module.css";
 
 export function Sort() {
-  const { pokemons, setPokemons } = usePokemon();
+  const { pokemons, setPokemons } = usePokemonStore();
   const [showSortCard, setShowSortCard] = useState(false);
   const [sortBy, setSortBy] = useState<string>("favorites");
   const [sortDirections, setSortDirections] = useState<{ [key: string]: boolean }>({

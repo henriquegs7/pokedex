@@ -1,9 +1,9 @@
-import { usePokemon } from "@/context/PokemonContext";
+import { usePokemonStore } from "@/global/pokemons";
 import { PokemonListProps } from "@/types/pokemons";
-import { resetAndSavePokemonsToDB } from "@/services/db"; // Alterado para atualizar apenas um item
+import { setStorage } from '@/services/localStorage';
 
 export function useFavorites() {
-  const { pokemons, setPokemons } = usePokemon();
+  const { pokemons, setPokemons } = usePokemonStore();
 
   async function toggleFavorite(selected: PokemonListProps) {
     const isFavoriting = !selected.isFavorite;
@@ -20,8 +20,8 @@ export function useFavorites() {
       updatedList.unshift(updatedPokemon);
     }
 
-    await resetAndSavePokemonsToDB(updatedList);
     setPokemons(updatedList);
+    setStorage('pokemons', updatedList);
   }
 
   return toggleFavorite;

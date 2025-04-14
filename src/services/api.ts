@@ -20,12 +20,18 @@ async function getDetailsPokemons(results: ResultsProps[]): Promise<PokemonListP
     results.map(({ url }: UrlProps) => axiosInstance.get(url))
   );
 
-  const fetchedPokemons = results.map(({ name }: PokemonNameProps, i: number) => ({
+  const fetchedPokemons = results.map(({ name }: PokemonNameProps, i: number): PokemonListProps => ({
     id: pokemonsAllData[i].data.id,
     name,
     image: pokemonsAllData[i].data.sprites.front_default,
     isFavorite: false,
-    data: pokemonsAllData[i].data,
+    data: { 
+      types: pokemonsAllData[i].data.types, 
+      height: pokemonsAllData[i].data.height, 
+      weight: pokemonsAllData[i].data.weight, 
+      stats: pokemonsAllData[i].data.stats, 
+      abilities: pokemonsAllData[i].data.abilities 
+    },
   }));
 
   return fetchedPokemons;
@@ -51,7 +57,13 @@ async function getSearchPokemons({ name }: PokemonNameProps): Promise<PokemonLis
       name: data.name,
       image: data.sprites.front_default,
       isFavorite: false,
-      data: data,
+      data: { 
+        types: data.types, 
+        height: data.height, 
+        weight: data.weight, 
+        stats: data.stats, 
+        abilities: data.abilities 
+      },
     }];
   } catch (error) {
     console.error("Erro ao pesquisar o Pokémon:", error);

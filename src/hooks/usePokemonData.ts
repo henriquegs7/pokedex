@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
-import { usePokemon, useSearchPokemonName } from "@/context/PokemonContext";
+import { useInputStore } from "@/global/inputValue";
+import { usePokemonStore } from "@/global/pokemons";
 import { getPokemons, getSearchPokemons } from "@/services/api";
-import { getPokemonsFromDB, savePokemonToDB } from "@/services/db";
+import { setStorage, getStorage } from '@/services/localStorage';
 import { PokemonListProps } from "@/types/pokemons";
 
 export function usePokemonData() {
-  const { pokemons, setPokemons } = usePokemon();
-  const { searchPokemonName } = useSearchPokemonName();
+  const { inputValue } = useInputStore();
+  const { pokemons, setPokemons } = usePokemonStore();
+
   const [filteredPokemons, setFilteredPokemons] = useState<PokemonListProps[]>(pokemons);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -14,18 +16,22 @@ export function usePokemonData() {
     setLoading(true);
 
     try {
-      const pokemonsDB: PokemonListProps[] = await getPokemonsFromDB();
+      const pokemonsStorage = getStorage('pokemons');
 
-      if (pokemonsDB.length > 0 && filteredPokemons.length < 2 && searchPokemonName === "") {
-        setPokemons(pokemonsDB);
+      console.log(pokemonsStorage?.length, pokemons?.length, inputValue);
+
+      if (pokemonsStorage?.length > 0 && pokemons?.length ===0 && inputValue === "") { // arrumar logica, estadando problema de carregamento
+        setPokemons(pokemonsStorage);
+
         return;
       }
-
+      
       if (navigator.onLine) {
-        const newPokemons = await getPokemons({ limit: 20, offset: pokemonsDB.length });
+        const newPokemons = await getPokemons({ limit: 25, offset: pokemons?.length ?? 0 });
 
         setPokemons([...pokemons, ...newPokemons]);
-        await savePokemonToDB([...pokemonsDB, ...newPokemons]);
+        setStorage('pokemons', [...pokemons, ...newPokemons]);
+
         return;
       }
     } catch (err) {
@@ -49,17 +55,17 @@ export function usePokemonData() {
     }
   };
 
-  function FilterPokemonExistingDB() {
+  function FilterPokemonExistingStorage() {
     const filtered = pokemons.filter((pokemon) =>
-      pokemon.name.toLowerCase().includes(searchPokemonName.toLowerCase())
+      pokemon.name.toLowerCase().includes(inputValue.toLowerCase())
     );
 
     setFilteredPokemons(filtered);
   }
 
   useEffect(() => {
-    FilterPokemonExistingDB();
-  }, [searchPokemonName]);
+    FilterPokemonExistingStorage();
+  }, [inputValue]);
 
   useEffect(() => {
     setFilteredPokemons(pokemons);
@@ -67,7 +73,6 @@ export function usePokemonData() {
 
   return {
     filteredPokemons,
-    setFilteredPokemons,
     loading,
     FetchPokemons,
     SearchByPokemonAPI

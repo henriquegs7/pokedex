@@ -1,5 +1,6 @@
-import styles from './styles.module.css';
 import { Icon } from "../icon";
+
+import styles from './styles.module.css';
 
 export function ScrollToTop() {
   function handleScrollTop() {

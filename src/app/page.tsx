@@ -1,15 +1,22 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Icon, InputSearch, Loading, Card, List, ScrollToTop, Sort } from "@/components";
-import { useSearchPokemonName } from "@/context/PokemonContext";
-import { usePokemonData } from "@/hooks";
+import { Card } from "@/components/card";
+import { Icon } from "@/components/icon";
+import { InputSearch } from "@/components/inputSearch";
+import { List } from "@/components/list";
+import { Loading } from "@/components/loading";
+import { ScrollToTop } from "@/components/scrollToTop";
+import { Sort } from "@/components/sort";
+import { usePokemonData } from "@/hooks/usePokemonData";
 import { PokemonListProps } from "@/types/pokemons";
+import { useInputStore } from "@/global/inputValue";
+
 import styles from "./page.module.css";
 
 export default function Home() {
   const { loading, FetchPokemons, filteredPokemons } = usePokemonData();
-  const { searchPokemonName } = useSearchPokemonName();
+  const { inputValue } = useInputStore();
 
   const [seletedPokemon, setSelectedPokemon] = useState<PokemonListProps>({} as PokemonListProps);
   const [showCard, setShowCard] = useState(false);
@@ -18,7 +25,7 @@ export default function Home() {
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (!loadMoreRef.current || searchPokemonName.length > 0) return;
+    if (!loadMoreRef.current || inputValue.length > 0) return;
 
     if (observerRef.current) {
       observerRef.current.disconnect();
@@ -35,7 +42,7 @@ export default function Home() {
     observerRef.current.observe(loadMoreRef.current);
 
     return () => observerRef.current?.disconnect();
-  }, [ searchPokemonName, loading]);
+  }, [ inputValue, loading]);
 
   return (
     <div className={styles.page}>
